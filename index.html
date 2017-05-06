@@ -1,36 +1,94 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
-    <title>A game of tictactoe</title>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <title>Tic-Tac-Toe</title>
   </head>
   <body>
-    <div id="board" class="sideways">
-      <div id="top-row">
-        <button id="top-left-corner" class="button"><div><br><div></button>
-        <button id="top-middle" class="button"><div><br><div></button>
-        <button id="top-right-corner" class="button"><div><br><div></button>
+    <div class="container-fluid board">
+      <div class="row">
+        <div class="col-xs-2">
+        </div>
+        <div class="col-xs-8">
+          <h1 class="font"> Tic-Tac-Toe </h1>
+          <br>
+          <br>
+          <div class="score-board">
+
+            <p class="player-score font">Player 1: 0</p>
+            <p class="computer-score font">Computer: 0</p>
+            <p class="cats-score font">Cats Game: 0</p>
+            <br>
+            <br>
+            <button id="settings">settings</button>
+          </div>
+          <br>
+          <br>
+          <div class="game-board">
+            <div class="small-grid">
+              <div class="top-row zone" id="box1">
+                <p class="spot"></p>
+              </div>
+              <div class="zone" id="box2">
+                <p class="spot"></p>
+              </div>
+              <div class="zone" id="box3">
+                <p class="spot"></p>
+              </div>
+            </div>
+            <div class="small-grid">
+              <div class="zone" id="box4">
+                <p class="spot"></p>
+              </div>
+              <div class="zone" id="box5">
+                <p class="spot"></p>
+              </div>
+              <div class="zone" id="box6">
+                <p class="spot"></p>
+              </div>
+            </div>
+            <div class="small-grid">
+              <div class="zone" id="box7">
+                <p class="spot"></p>
+              </div>
+              <div class="zone" id="box8">
+                <p class="spot"></p>
+              </div>
+              <div class="zone" id="box9">
+                <p class="spot"></p>
+              </div>
+            </div>
+          </div>
+          <div id="choose">
+            <br>
+            <h3>What do you want to play</h3>
+            <br>
+            <button id="play-o" class="button-active">Play As O's</button>
+            <button id="play-x" class="button-deactive" >Play As X's</button>
+            <br>
+            <h3 class="top-border">How many players</h3>
+            <br>
+            <button class="button-active"id="one-player">One Player</button>
+            <button class="button-deactive" id="two-player">Two Players</button>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div class="top-border"><div>
+            <button type="button"id="close">Close</button>
+          </div>
+        </div>
+        <div class="col-xs-2">
+
+        </div>
       </div>
-      <div id="middle-row">
-        <button id="middle-left" class="button"><div><br><div></button>
-        <button id="center" class="button"><div><br><div></button>
-        <button id="middle-right" class="button"><div><br><div></button>
-      </div>
-      <div id="lower-row">
-        <button id="lower-left-corner" class="button"><div><br><div></button>
-        <button id="lower-middle" class="button"><div><br><div></button>
-        <button id="lower-right-corner" class="button"><div><br><div></button>
-      </div>
+
     </div>
-    <div id="button-board" class="sideways">
-      <button id="playX">play as X</button>
-      <button id="playO">Play as 0</button
-    </div>
+
+
     <script src="https://code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="app.js"></script>
-
-    </script>
   </body>
 </html>

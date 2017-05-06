@@ -1,442 +1,275 @@
-var winnerTimer = 0;
-var winnerStatus = 0;
-// set boxs: -1 = free / 0 = O / 1 = X;
-//top boxes
-var box1 = -1;
-var box2 = -1;
-var box3 = -1;
-//middle boxes
-var box4 = -1;
-var box5 = -1;
-var box6 = -1;
-//bottom boxes
-var box7 = -1;
-var box8 = -1;
-var box9 = -1;
 
-//what the player is: 0 = O / 1 = X;
-var playerStatus = 0;
-//what the computer is: 0 = O / 1 = X;
-var computerStatus = 1;
+// 0=o's 1=x's
+var playerState = 0;
+// 0=o's, 1=x's 2=two players
+var computerState = 1;
+var playertwo = 1;
+var whosTurn = 0;
+var playerScore = 0;
+var computerScore = 0;
+var catScore = 0;
+var moves = 0;
 
-function writeMove(status, boxWrite) {
-  if (status == 0) {
-    $(boxWrite).html("O");
-  } else {
-    $(boxWrite).html("X")
+var winningArr = [[3,5,7],[4,5,6],[1,5,9],[2,5,8],[1,4,7],[3,6,9],[1,2,3],[7,8,9]]
+var aiMoves = [5,1,7,3,9,2,4,8,6];
+
+function writeMove(str){
+  if ($(str).children("p").html() === "") {
+
+    return "yes"
+  }else{
+    return "blocked"
   }
 }
 
-function winCheck(status) {
-  if (box1 == status && box2 == status && box3 == status) {
-    console.log("winner");
-    winner("#top-left-corner", "#top-middle", "#top-right-corner")
-  } else if (box4 == status && box5 == status && box6 == status) {
-    console.log("winner")
-    winner("#middle-left", "#center", "#middle-right")
-  } else if (box7 == status && box8 == status && box9 == status) {
-    console.log("winner")
-    winner("#lower-left-corner", "#lower-middle", "#lower-right-corner")
-  } else if (box1 == status && box4 == status && box7 == status) {
-    console.log("winner")
-    winner("#top-left-corner", "#middle-left", "#lower-left-corner")
-  } else if (box2 == status && box5 == status && box8 == status) {
-    console.log("winner")
-    winner("#top-middle", "#center", "#lower-middle")
-  } else if (box3 == status && box6 == status && box9 == status) {
-    console.log("winner")
-    winner("#top-right-corner", "#middle-right", "#lower-right-corner")
-  } else if (box1 == status && box5 == status && box9 == status) {
-    console.log("winner")
-    winner("#top-left-corner", "#center", "#lower-right-corner")
-  } else if (box3 == status && box5 == status && box7 == status) {
-    console.log("winner")
-    winner("#top-right-corner", "#center", "#lower-left-corner")
-  }else if(box1 !== -1 && box2 !== -1 && box3 !== -1 && box4 !== -1 && box5 !== -1 && box6 !== -1 && box7 !== -1 && box8 !== -1 && box9 !== -1){
-    console.log("no one wins")
-    clearBoard()
-  }
-  else {
-    console.log("no winner yet.");
-    console.log(box1, box2, box3);
-    console.log(box4, box5, box6);
-    console.log(box7, box8, box9);
-  }
+function catsGame(){
+  catScore += 1
+  $(".cats-score").html("Cats Game: " + catScore);
+  clearBoard()
 }
 
-function clearBoard() {
-  box1 = -1;
-  box2 = -1;
-  box3 = -1;
-  box4 = -1;
-  box5 = -1;
-  box6 = -1;
-  box7 = -1;
-  box8 = -1;
-  box9 = -1;
-  $(".button").html("<div><br></div>");
-}
-
-function winner(str1, str2, str3) {
-
-  var color = 1;
-  winnerStatus = 1;
-  var breakout = setInterval(function() {
-    console.log("i'm in")
-    if (winnerTimer == 10) {
-      clearInterval(breakout);
-      winnerTimer = 0;
-      winnerStatus = 0;
-      clearBoard()
-
-      $(str1).css("background-color", "lightblue");
-      $(str2).css("background-color", "lightblue");
-      $(str3).css("background-color", "lightblue");
-
-    } else if (color == 1) {
-      $(str1).css("background-color", "green");
-      $(str2).css("background-color", "green");
-      $(str3).css("background-color", "green");
-      color = 0;
-      winnerTimer += 1;
-    } else {
-      $(str1).css("background-color", "lightgreen");
-      $(str2).css("background-color", "lightgreen");
-      $(str3).css("background-color", "lightgreen");
-      color = 1;
-      winnerTimer += 1;
+function computerMove(){
+  var player = canSomeoneWin(playerState);
+  var computer = canSomeoneWin(computerState);
+  if(computer != "no"){
+    if(computerState == 0){
+      $("#box" + computer).children("p").html("O")
+    }else{
+      $("#box" + computer).children("p").html("X")
     }
-  }, 250);
-
-}
-
-function canSomeoneWin(status) {
-  if (box1 == status && box2 == status && box3 == -1) {
-    return 1;
-  } else if (box1 == status && box3 == status && box2 == -1) {
-    return 2;
-  } else if (box2 == status && box3 == status && box1 == -1) {
-    return 3;
-  } else if (box4 == status && box5 == status && box6 == -1) {
-    return 4;
-  } else if (box4 == status && box6 == status && box5 == -1) {
-    return 5;
-  } else if (box6 == status && box5 == status && box4 == -1) {
-    return 6;
-  } else if (box7 == status && box8 == status && box9 == -1) {
-    return 7;
-  } else if (box7 == status && box9 == status && box8 == -1) {
-    return 8;
-  } else if (box8 == status && box9 == status && box7 == -1) {
-    return 9;
-  } else if (box1 == status && box4 == status && box7 == -1) {
-    return 10;
-  } else if (box1 == status && box7 == status && box4 == -1) {
-    return 11;
-  } else if (box7 == status && box4 == status && box1 == -1) {
-    return 12;
-  } else if (box2 == status && box5 == status && box8 == -1) {
-    return 13;
-  } else if (box2 == status && box8 == status && box5 == -1) {
-    return 14;
-  } else if (box8 == status && box5 == status && box2 == -1) {
-    return 15;
-  } else if (box3 == status && box6 == status && box9 == -1) {
-    return 16;
-  } else if (box3 == status && box9 == status && box6 == -1) {
-    return 17;
-  } else if (box6 == status && box9 == status && box3 == -1) {
-    return 18;
-  } else if (box1 == status && box5 == status && box9 == -1) {
-    return 19;
-  } else if (box1 == status && box9 == status && box5 == -1) {
-    return 20;
-  } else if (box9 == status && box5 == status && box1 == -1) {
-    return 21;
-  } else if (box3 == status && box5 == status && box7 == -1) {
-    return 22;
-  } else if (box3 == status && box7 == status && box5 == -1) {
-    return 23;
-  } else if (box5 == status && box7 == status && box3 == -1) {
-    return 24;
-  } else {
-    return false;
-  }
-
-  {
-
-  }
-}
-
-function winBlock(num) {
-  switch (num) {
-    case 1:
-      writeMove(computerStatus, "#top-right-corner")
-      box3 = computerStatus
-      break;
-    case 2:
-      writeMove(computerStatus, "#top-middle")
-      box2 = computerStatus
-      break;
-    case 3:
-      writeMove(computerStatus, "#top-left-corner")
-      box1 = computerStatus
-      break;
-    case 4:
-      writeMove(computerStatus, "#middle-right")
-      box6 = computerStatus
-      break;
-    case 5:
-      writeMove(computerStatus, "#center")
-      box5 = computerStatus
-      break;
-    case 6:
-      writeMove(computerStatus, "#middle-left")
-      box4 = computerStatus
-      break;
-    case 7:
-      writeMove(computerStatus, "#lower-right-corner")
-      box9 = computerStatus
-      break;
-    case 8:
-      writeMove(computerStatus, "#lower-middle")
-      box8 = computerStatus
-      break;
-    case 9:
-      writeMove(computerStatus, "#lower-left-corner")
-      box7 = computerStatus
-      break;
-    case 10:
-      writeMove(computerStatus, "#lower-left-corner")
-      box7 = computerStatus
-      break;
-    case 11:
-      writeMove(computerStatus, "#middle-left")
-      box4 = computerStatus
-      break;
-    case 12:
-      writeMove(computerStatus, "#top-left-corner")
-      box1 = computerStatus
-      break;
-    case 13:
-      writeMove(computerStatus, "#lower-middle")
-      box8 = computerStatus
-      break;
-    case 14:
-      writeMove(computerStatus, "#center")
-      box5 = computerStatus
-      break;
-    case 15:
-      writeMove(computerStatus, "#top-middle")
-      box2 = computerStatus
-      break;
-    case 16:
-      writeMove(computerStatus, "#lower-right-corner")
-      box9 = computerStatus
-      break;
-    case 17:
-      writeMove(computerStatus, "#middle-right")
-      box6 = computerStatus
-      break;
-    case 18:
-      writeMove(computerStatus, "#top-right-corner")
-      box3 = computerStatus
-      break;
-    case 19:
-      writeMove(computerStatus, "#lower-right-corner")
-      box9 = computerStatus
-      break;
-    case 20:
-      writeMove(computerStatus, "#center")
-      box5 = computerStatus
-      break;
-    case 21:
-      writeMove(computerStatus, "#top-left-corner")
-      box1 = computerStatus
-      break;
-    case 22:
-      writeMove(computerStatus, "#lower-left-corner")
-      box7 = computerStatus
-      break;
-    case 23:
-      writeMove(computerStatus, "#center")
-      box5 = computerStatus
-      break;
-    case 24:
-      writeMove(computerStatus, "#top-right-corner")
-      box3 = computerStatus
-      break;
-
-  }
-
-}
-
-function computerMove() {
-  var comTest = canSomeoneWin(computerStatus)
-  console.log(comTest)
-  if (comTest !== false) {
-    winBlock(comTest);
-  } else {
-    var playerTest = canSomeoneWin(playerStatus)
-    console.log(playerTest)
-    if (playerTest !== false) {
-      winBlock(playerTest);
-    } else {
-      if (box1 == -1) {
-        writeMove(computerStatus, "#top-left-corner")
-        box1 = computerStatus;
-      } else if (box3 == -1) {
-        writeMove(computerStatus, "#top-right-corner")
-        box3 = computerStatus;
-      } else if (box7 == -1) {
-        writeMove(computerStatus, "#lower-left-corner")
-        box7 = computerStatus;
-      } else if (box9 == -1) {
-        writeMove(computerStatus, "#lower-right-corner")
-        box9 = computerStatus;
-      } else if (box5 == -1) {
-        writeMove(computerStatus, "#center")
-        box5 = computerStatus;
-      } else if (box2 == -1) {
-        writeMove(computerStatus, "#top-middle")
-        box2 = computerStatus;
-      } else if (box4 == -1) {
-        writeMove(computerStatus, "#middle-left")
-        box4 = computerStatus;
-      } else if (box6 == -1) {
-        writeMove(computerStatus, "#middle-right")
-        box6 = computerStatus;
-      } else if (box8 == -1) {
-        writeMove(computerStatus, "#lower-middle")
-        box8 = computerStatus;
-      } else {
-
+  }else if(player != "no"){
+    if(computerState == 0){
+      $("#box" + player).children("p").html("O")
+    }else{
+      $("#box" + player).children("p").html("X")
+    }
+  }else{
+    for(var i = 0; i < aiMoves.length; i++){
+      var check = writeMove("#box" + aiMoves[i]);
+      if(check != "blocked"){
+        if(computerState == 0){
+          $("#box" + aiMoves[i]).children("p").html("O")
+        }else{
+          $("#box" + aiMoves[i]).children("p").html("X")
+        }
+        break;
       }
     }
   }
-
 }
-//board
-$("#top-left-corner").click(function() {
-  if (winnerStatus  == 0) {
-    if (box1 == -1) {
-      console.log("check")
-      writeMove(playerStatus, "#top-left-corner");
-      box1 = playerStatus;
-      winCheck(playerStatus);
-      computerMove();
-      winCheck(computerStatus);
-    }
-  }
-})
-$("#top-middle").click(function() {
-  if (winnerStatus == 0) {
-    if (box2 == -1) {
-      console.log("check")
-      writeMove(playerStatus, "#top-middle");
-      box2 = playerStatus;
-      winCheck(playerStatus);
-      computerMove()
-      winCheck(computerStatus);
-    }
-  }
-})
-$("#top-right-corner").click(function() {
-  if (winnerStatus == 0) {
-    if (box3 == -1) {
-      console.log("check")
-      writeMove(playerStatus, "#top-right-corner");
-      box3 = playerStatus;
-      winCheck(playerStatus);
-      computerMove()
-      winCheck(computerStatus);
-    }
-  }
-})
-$("#middle-left").click(function() {
-  if (winnerStatus == 0) {
-    if (box4 == -1) {
-      console.log("check")
-      writeMove(playerStatus, "#middle-left");
-      box4 = playerStatus;
-      winCheck(playerStatus);
-      computerMove()
-      winCheck(computerStatus);
-    }
-  }
-})
-$("#center").click(function() {
-  if (winnerStatus == 0) {
-    if (box5 == -1) {
-      console.log("check")
-      writeMove(playerStatus, "#center");
-      box5 = playerStatus;
-      winCheck(playerStatus);
-      computerMove()
-      winCheck(computerStatus);
-    }
-  }
-})
-$("#middle-right").click(function() {
-  if (winnerStatus == 0) {
-    if (box6 == -1) {
-      console.log("check")
-      writeMove(playerStatus, "#middle-right");
-      box6 = playerStatus;
-      winCheck(playerStatus);
-      computerMove()
-      winCheck(computerStatus);
-    }
-  }
-})
-$("#lower-left-corner").click(function() {
-  if (winnerStatus == 0) {
-    if (box7 == -1) {
-      console.log("check")
-      writeMove(playerStatus, "#lower-left-corner");
-      box7 = playerStatus;
-      winCheck(playerStatus);
-      computerMove()
-      winCheck(computerStatus);
-    }
-  }
-})
-$("#lower-middle").click(function() {
-  if (winnerStatus == 0) {
-    if (box8 == -1) {
-      console.log("check")
-      writeMove(playerStatus, "#lower-middle");
-      box8 = playerStatus;
-      winCheck(playerStatus);
-      computerMove()
-      winCheck(computerStatus);
-    }
-  }
-})
-$("#lower-right-corner").click(function() {
-  if (winnerStatus == 0) {
-    if (box9 == -1) {
-      console.log("check")
-      writeMove(playerStatus, "#lower-right-corner");
-      box9 = playerStatus;
-      winCheck(playerStatus);
-      computerMove()
-      winCheck(computerStatus);
-    }
-  }
-})
 
-$("#playX").click(function() {
-  if (playerStatus == 0) {
-    playerStatus = 1;
-    computerStatus = 0;
-    clearBoard()
+function canSomeoneWin(state){
+  var string = "";
+  var results ="no";
+  if(state == 0){
+    string = "O"
+  }else{
+    string = "X"
   }
-})
-$("#playO").click(function() {
-  if (playerStatus == 1) {
-    playerStatus = 0;
-    computerStatus = 1;
-    clearBoard()
+  for (var i = 0; i < winningArr.length; i++) {
+    results = checkLine(winningArr[i], string)
+    if(results != "no"){
+      var test = writeMove("#box" + results)
+      if(test != "blocked"){
+        return results;
+      }
+    }
   }
+  return "no"
+}
+
+function winCheck(arr, state){
+  var amount = 0;
+  if(state == 0){
+    string = "O"
+  }else{
+    string = "X"
+  }
+  for (var j = 0; j < arr.length; j++) {
+      for(var i=0; i < arr[j].length; i++ ){
+        if($("#box" + arr[j][i]).children("p").html() === string){
+        amount +=1;
+        }
+      }
+      if(amount == 3){
+        return arr[j]
+      }else{
+        amount = 0
+      }
+    }
+    return "no"
+  }
+
+function winner(arr, player){
+  var color = 0
+  var winTimer = 0;
+  console.log(player)
+  if(player == "player1"){
+    playerScore += 1
+    $(".player-score").html("player 1: " + playerScore)
+  }else if(player == "player2"){
+    computerScore += 1
+    $(".computer-score").html("player 2: " + computerScore)
+  }else{
+    computerScore += 1
+    $(".computer-score").html("Computer: " + computerScore)
+  }
+
+  var timer = setInterval(function(){
+    if(winTimer == 6){
+      clearInterval(timer)
+      clearBoard()
+    }else if(color == 0){
+      $("#box" + arr[0]).css("background-color", "#D6B9B2");
+      $("#box" + arr[1]).css("background-color", "#D6B9B2");
+      $("#box" + arr[2]).css("background-color", "#D6B9B2");
+      color = 1;
+      winTimer += 1;
+    }else{
+      $("#box" + arr[0]).css("background-color", "#B4C3A2");
+      $("#box" + arr[1]).css("background-color", "#B4C3A2");
+      $("#box" + arr[2]).css("background-color", "#B4C3A2");
+      color = 0;
+      winTimer += 1;
+    }
+
+  }, 400)
+}
+
+function activeButton(active, deactive){
+  $(active).removeClass("button-deactive");
+  $(active).addClass("button-active");
+  $(deactive).removeClass("button-active");
+  $(deactive).addClass("button-deactive");
+}
+
+function checkLine(arr, str){
+  var amount = 0;
+  for(var i=0; i < arr.length; i++ ){
+    if($("#box" + arr[i]).children("p").html() == str){
+    amount +=1;
+    }
+  }
+  if(amount == 2){
+    for(var i=0; i < arr.length; i++ ){
+      if($("#box" + arr[i]).children("p").html() != str){
+        return arr[i];
+      }
+    }
+  }else{
+    return "no"
+  }
+}
+
+function clearBoard(){
+  for (var i = 1; i < 10; i++) {
+    $("#box" + i).children("p").html("");
+  }
+  moves = 0;
+}
+
+function clearScore(){
+  $(".player-score").html("player 1: 0");
+  $(".computer-score").html("computer: 0");
+}
+
+$(document).ready(function(){
+ $(".zone").on("click", function(){
+   if(computerState != 2){
+     if(playerState == 0){
+       if($(this).children("p").html() == ""){
+         $(this).children("p").html("O")
+         moves += 1;
+         if(winCheck(winningArr, playerState) != "no"){
+           winner(winCheck(winningArr, playerState), "player1")
+         }else if(moves == 9){
+           catsGame()
+         }else{
+           computerMove()
+           moves += 1;
+           if(winCheck(winningArr, computerState) != "no"){
+             winner(winCheck(winningArr, computerState), "computer")
+           }
+         }
+       }
+   }else{
+     if($(this).children("p").html() == ""){
+       $(this).children("p").html("X")
+       moves += 1;
+       if(winCheck(winningArr, playerState) != "no"){
+         winner(winCheck(winningArr, playerState), "player1")
+       }else if(moves == 9){
+         catsGame()
+       }else{
+         computerMove()
+         moves += 1;
+         if(winCheck(winningArr, computerState) != "no"){
+           winner(winCheck(winningArr, computerState), "computer")
+         }
+       }
+     }
+   }
+   }else{
+     if(whosTurn == 0){
+       if($(this).children("p").html() == ""){
+         $(this).children("p").html("O")
+         moves += 1;
+         if(winCheck(winningArr, playerState) != "no"){
+           winner(winCheck(winningArr, playerState), "player1")
+         }else if(moves == 9){
+           catsGame()
+         }
+         whosTurn = 1;
+       }
+     }else{
+       if($(this).children("p").html() == ""){
+         $(this).children("p").html("X")
+         moves += 1;
+         if(winCheck(winningArr, playertwo) != "no"){
+           winner(winCheck(winningArr, playertwo), "player2")
+         }else if(moves == 9){
+           catsGame()
+         }
+         whosTurn = 0
+       }
+     }
+   }
+
+  })
+  $("#settings").on("click", function(){
+    $("#choose").addClass("active");
+  })
+  $("#close").on("click", function(){
+    $("#choose").removeClass("active");
+  })
+  $("#play-o").on("click", function(){
+    activeButton( "#play-o", "#play-x")
+    playerState = 0;
+    computerState = 1;
+  })
+  $("#play-x").on("click", function(){
+    activeButton("#play-x", "#play-o")
+    playerState = 1;
+    computerState = 0;
+  })
+  $("#one-player").on("click", function(){
+    clearBoard()
+    clearScore()
+    activeButton("#one-player", "#two-player")
+    if(playerState == 1){
+      computerState = 0
+    }else{
+      computerState = 1
+    }
+  })
+  $("#two-player").on("click", function(){
+    clearBoard()
+    clearScore()
+    activeButton("#two-player", "#one-player")
+    playerState = 0;
+    computerState = 2;
+    $(".computer-score").html("Player 2: 0")
+  })
+
+
 })

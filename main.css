@@ -1,5 +1,118 @@
-.button{
-  height: 100px;
-  width:100px;
-  margin-top: 5px;
-  background-color: lightblue;
+html{
+  font-size: 16px;
+}
+body{
+  font-size: 62.5%;
+  background-color: #736345;
+}
+
+.font{
+  color:white;
+}
+
+#settings{
+  background-color: #8EAFB1;
+  border-color: #3D7477;
+  padding: 0px 15px;
+}
+
+#choose{
+  height: 35em;
+  width: 35em;
+  background-color: #8EB0B1;
+  text-align: center;
+  z-index: 1;
+  position: absolute;
+  top: 35%;
+  left: 36.5%;
+  border-radius: 5%;
+  border: solid;
+  opacity: 0;
+  visibility: hidden;
+}
+#choose.active{
+  opacity: 1;
+  visibility: visible;
+}
+
+.top-border{
+  border-top: solid;
+  padding-top: 25px;
+}
+
+
+
+
+.small-grid{
+  display: inline-block;
+  margin-left: .5em;
+  vertical-align: top;
+}
+
+.zone{
+  height: 10em;
+  width: 10em;
+  background-color: #B4C3A2;
+  border:  solid;
+  margin-top: 10%;
+}
+
+.board{
+  text-align: center;
+}
+
+.spot{
+  margin-top: 25%;
+  color: black;
+  font-size: 3em
+}
+
+button{
+  font-size: 1.6em;
+}
+
+.score-board p{
+  display: inline-block;
+  font-size: 1.8em;
+}
+.computer-score{
+  margin-left: 2.5%;
+  margin-right: 2.5%;
+}
+
+
+.button-active{
+  background-color: #ABD5AE;
+  border-color: #4E9C53;
+  color: black;
+}
+
+.button-deactive{
+  background-color: #718855;
+  border-color: #3D561E;
+}
+
+#close{
+  background-color: #ABD5AE;
+  border-color: #4E9C53;
+  color: black;
+}
+
+
+@media screen and (max-width: 479px) {
+  .zone{
+    height: 5.5em;
+    width: 5.5em;
+    background-color: #B4C3A2;
+    border:  solid;
+    margin-top: 10%;
+  }
+  #choose{
+    top: 25%;
+    left: -22%;
+  }
+  .spot{
+    margin-top: 7%;
+  }
+
+}
